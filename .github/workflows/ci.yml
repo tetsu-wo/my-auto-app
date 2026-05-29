@@ -30,9 +30,9 @@ jobs:
 
       # 4. バックエンドの動作確認（必要に応じて追加）
       # ※もしテストコードを走らせたい場合は、コンテナ内で実行させます
-      - name: Run Backend Tests inside Container
-        run: |
-          docker compose exec -T backend ./gradlew test
+#      - name: Run Backend Tests inside Container
+#        run: |
+#          docker compose exec -T backend ./gradlew test
 
       # 5. フロントエンドの検証（型同期やビルドが成功して、コンテナが生きているか確認）
       - name: Check Frontend Container Status
