@@ -36,19 +36,27 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Generate API Types
+        run: npm run generate-types
 
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+#      - name: Build Project Artifacts
+#        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --webpack
+#        env:
+#          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+#
+#      - name: Link Production Dependencies
+#        run: npm prune --production
+#
+#      - name: Deploy Project Artifacts to Vercel
+#        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+#        env:
+#          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deploy to Vercel
+        run: vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
 
-      # --------- Render (バックエンド) のデプロイ ---------
+      # --------- Render (バックエンド) のデプロイ -----------
       - name: Trigger Render Deploy Hook
         run: |
           curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"

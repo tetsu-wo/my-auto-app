@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 // api.d.ts から自動生成された型をインポート
-import { components } from "@/types/api";
+import { components } from "../../src/types/api";
 
 // schemas から User 型を抽出
 type User = components["schemas"]["User"];
 
-export const UserProfile = () => {
+const UserProfile = () => {
   // 状態（State）に型を適用する
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,3 +39,5 @@ export const UserProfile = () => {
     </div>
   );
 };
+
+export default UserProfile;
