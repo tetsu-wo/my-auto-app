@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate-api": "openapi-typescript http://backend:8080/v3/api-docs -o src/types/api.d.ts",
-    "vercel-build": "next build ."
+    "vercel-build": "npm run prepare && next build"
   },
   "dependencies": {
     "next": "16.2.6",
