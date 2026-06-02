@@ -54,7 +54,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # --------- Render (バックエンド) のデプロイ ---------
+      # --------- Render (バックエンド) のデプロイ ----------
       - name: Trigger Render Deploy Hook
         run: |
           curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
