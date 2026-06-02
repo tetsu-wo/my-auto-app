@@ -46,7 +46,7 @@ jobs:
             exit 1
           fi
 
-      # 6. 後片付け
-      - name: Stop Containers
-        if: always() # 途中でエラーが起きても必ず実行する
-        run: docker compose down
+#      # 6. 後片付け
+#      - name: Stop Containers
+#        if: always() # 途中でエラーが起きても必ず実行する
+#        run: docker compose down

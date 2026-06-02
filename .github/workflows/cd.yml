@@ -2,7 +2,7 @@ name: Continuous Deployment
 
 on:
   workflow_run:
-    workflows: ["Fullstack CI (with Docker)"] # 👈 ci.ymlの「name:」に指定した文字列と完全一致させる
+    workflows: [ Fullstack CI (with Docker) ] # 👈 ci.ymlの「name:」に指定した文字列と完全一致させる
     types:
       - completed # ワークフローが終了した時を指定
 
