@@ -37,7 +37,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Generate API Types
-        run: npm run generate-types
+        run: npm run generate-api
 
 #      - name: Build Project Artifacts
 #        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --webpack
