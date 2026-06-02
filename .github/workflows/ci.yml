@@ -2,7 +2,7 @@ name: Fullstack CI (with Docker)
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, add-ci-setting ]
     # 💡 Dockerfileの変更時にもCIが走るように対象を追加
     paths:
       - 'backend/**'
