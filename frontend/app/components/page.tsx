@@ -7,7 +7,7 @@ import { components } from "@/types/api";
 // schemas から User 型を抽出
 type User = components["schemas"]["User"];
 
-export const UserProfile = () => {
+const UserProfile = () => {
   // 状態（State）に型を適用する
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,3 +39,5 @@ export const UserProfile = () => {
     </div>
   );
 };
+
+export default UserProfile;
