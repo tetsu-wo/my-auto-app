@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = {"http://localhost:3000", "https://vercel.app"}) // フロントエンドのURLに合わせて許可
+@CrossOrigin(origins = {"http://localhost:3000", "https://my-auto-app.vercel.app"}) // フロントエンドのURLに合わせて許可
 public class UserController {
 
     @GetMapping("/{id}")
