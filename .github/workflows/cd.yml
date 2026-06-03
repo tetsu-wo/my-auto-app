@@ -61,5 +61,9 @@ jobs:
 
       # --------- Render (バックエンド) のデプロイ -----------
       - name: Trigger Render Deploy Hook
+
+        env:
+          RENDER_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
         run: |
-          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          curl -X POST "$RENDER_URL"
