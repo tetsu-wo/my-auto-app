@@ -15,7 +15,7 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         // 動作確認用のダミーデータを返す
-        return new User(id, "金島", "yamada@example.com");
+        return new User(id, "田中", "xxxxxxxxxx@xxx.co.jp");
     }
 }
 
