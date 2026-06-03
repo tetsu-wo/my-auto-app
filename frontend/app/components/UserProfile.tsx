@@ -14,8 +14,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     // JavaのバックエンドAPIからデータを取得
-    fetch("${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/1")
-//     fetch("http://localhost:8080/api/users/1")
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/1`)
       .then((res) => res.json())
       .then((data: User) => {
         setUser(data);
