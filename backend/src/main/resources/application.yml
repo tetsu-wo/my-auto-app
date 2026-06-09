@@ -1,3 +1,23 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    # 👇 ここから「自動リトライ」の設定を追加
+#    hikari:
+#      initialization-fail-timeout: 60000 # 💡 接続失敗しても60秒間は諦めずにリトライを繰り返す設定
+#      connection-timeout: 30000
+
+
+  jpa:
+    hibernate:
+      ddl-auto: none # 開発初期は自動生成が便利（本番はnoneかvalidate）
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+
 springdoc:
   api-docs:
     path: /v3/api-docs

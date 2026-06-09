@@ -1,23 +1,27 @@
 services:
   # 1. データベース (MySQL)
-#  db:
+  db:
 #    build: ./db # DBのDockerfileがある場合。なければ image: mysql:8.0
-#    container_name: my_mysql
-#    restart: always
-#    environment:
-#      MYSQL_DATABASE: mydb
-#      MYSQL_USER: user
-#      MYSQL_PASSWORD: password
-#      MYSQL_ROOT_PASSWORD: root_password
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - db_data:/var/lib/mysql # 名前付きボリュームでデータを死守
-#    healthcheck: # Spring起動のタイミングを計るために必須
-#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 10
+    image: mysql:8.0
+    container_name: my_mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_HOST=${DB_CONTAINER_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql # 名前付きボリュームでデータを死守
+    healthcheck: # Spring起動のタイミングを計るために必須
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-network
 
   # 2. バックエンド (Spring Boot)
   backend:
@@ -25,16 +29,21 @@ services:
     container_name: my_backend
     ports:
       - "8080:8080"
-#    environment:
-#      # application.ymlで定義した変数に値を流し込む
-#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydb?allowPublicKeyRetrieval=true&useSSL=false
-#      SPRING_DATASOURCE_USERNAME: user
-#      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - app-network
+
+
+    environment:
+      # application.ymlで定義した変数に値を流し込む
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydb?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
 #    volumes:
 #      - ./backend:/app # 開発用：ソース変更をコンテナに即時反映（バインドマウント）
-#    depends_on:
-#      db:
-#        condition: service_healthy # DBが完全に立ち上がってからSpring(Flyway)を起動
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy # DBが完全に立ち上がってからSpring(Flyway)を起動
 
   # 3. フロントエンド (Next.js)
 #  frontend:
@@ -50,14 +59,23 @@ services:
 #    depends_on:
 #      - backend
 #
-## 名前付きボリュームの定義
-#volumes:
-#  db_data:
+
+
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+
     container_name: my_frontend
+
     ports:
       - "3000:3000"
+
+    networks:
+      - app-network
+
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8080
     volumes:
@@ -65,7 +83,16 @@ services:
       - /app/node_modules
     depends_on:
       - backend
-    # 👇 ここを追加（sh -c で型同期とNext.js起動を連続で実行）
-    command: sh -c "sleep 15 && npm run generate-api && npm run dev"
-    # ※「npm run generate」の部分は、お使いの package.json にある型同期コマンド（openapi-gen 等）に書き換えてください。
+    command: npm run dev
 
+#    # 👇 ここを追加（sh -c で型同期とNext.js起動を連続で実行）
+#    command: sh -c "sleep 15 && npm run generate-api && npm run dev"
+#    # ※「npm run generate」の部分は、お使いの package.json にある型同期コマンド（openapi-gen 等）に書き換えてください。
+
+# 名前付きボリュームの定義
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
