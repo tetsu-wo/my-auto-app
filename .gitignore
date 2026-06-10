@@ -244,4 +244,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+#flyway
+flyway.conf
+
 # End of https://www.toptal.com/developers/gitignore/api/java,nextjs,react,gradle,intellij,windows
