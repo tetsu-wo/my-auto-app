@@ -1,26 +1,36 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mydb}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+#    url: jdbc:mysql://db:3306/mydb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Tokyo
+#    username: root
+#    password: root_password
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  flyway:
-    enabled: true
-    # 👇 ここから「自動リトライ」の設定を追加
-#    hikari:
-#      initialization-fail-timeout: 60000 # 💡 接続失敗しても60秒間は諦めずにリトライを繰り返す設定
-#      connection-timeout: 30000
-
-
+    hikari:
+      initialization-fail-timeout: 60000 # 💡 接続失敗しても60秒間は諦めずにリトライを繰り返す設定
+      connection-timeout: 30000
   jpa:
     hibernate:
-      ddl-auto: none # 開発初期は自動生成が便利（本番はnoneかvalidate）
+      ddl-auto: validate # 開発初期は自動生成が便利（本番はnoneかvalidate）
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+  flyway:
+    enabled: true
+    user: root
+    password: root_password
+    locations: classpath:db/migration
+#    database-platform: org.hibernate.dialect.MySQLDialect
 
+
+    # 👇 ここから「自動リトライ」の設定を追加
+#
+
+
+
+
+logging:
+  level:
+    org.flywaydb: DEBUG
 
 springdoc:
   api-docs:
