@@ -16,9 +16,8 @@ spring:
     show-sql: true
   flyway:
     enabled: true
-    user: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
     locations: classpath:db/migration
+    connect-retries: 20
 #    database-platform: org.hibernate.dialect.MySQLDialect
 
 

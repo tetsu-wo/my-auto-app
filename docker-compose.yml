@@ -6,17 +6,18 @@ services:
     container_name: my_mysql
     restart: always
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - DB_HOST=${DB_CONTAINER_NAME}
-#      - MYSQL_ROOT_HOST='%'
+      - SPRING_DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql # 名前付きボリュームでデータを死守
     healthcheck:
       # 【【確認】】パスワード直書きの為、直書きしない方法を検討する必要があり！！！
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -35,15 +36,10 @@ services:
 
 
     environment:
-      SPRING_DATASOURCE_URL: ${MYSQL_URL}
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT}
-      # application.ymlで定義した変数に値を流し込む
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      # これを追加すると、Javaのクラスを元に足りないテーブル（product）を自動で作成してくれます
-#      SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
-#    volumes:
-#      - ./backend:/app # 開発用：ソース変更をコンテナに即時反映（バインドマウント）
-#    restart: on-failure
+      - SPRING_DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+
     depends_on:
       db:
         condition: service_healthy # DBが完全に立ち上がってからSpring(Flyway)を起動
